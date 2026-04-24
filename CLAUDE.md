@@ -49,5 +49,5 @@ Tone rules:
 
 - `index.html` is a single self-contained file; images are inlined as base64. Line counts are small (~443 lines) but the file weighs ~900KB because of the image payload — budget read calls with offset/limit.
 - `_headers` and `_redirects` are Cloudflare Pages / Netlify deploy configs; the `.ics` MIME type must remain `text/calendar; charset=utf-8` with `Content-Disposition: attachment`.
-- `Soumi-Jos-SaveTheDate.ics` ships 4 `VALARM` reminders (30, 10, 5, 1 days out). If the wedding date ever changes, regenerate this file alongside the HTML copy.
+- `Soumi-Jos-SaveTheDate.ics` ships 3 `VALARM` reminders: 1 month before, 5 days before, and morning of the event (9am CDMX). If the wedding date ever changes, regenerate this file alongside the HTML copy.
 - Deploy path: drag-upload the folder to Cloudflare Pages (no GitHub connect); custom domain `soumyjos.com` sits in front.

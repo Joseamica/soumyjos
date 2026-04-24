@@ -6,3 +6,13 @@ Thumbs.db
 node_modules/
 .env
 .env.local
+
+# Playwright testing artifacts (snapshots, consoles, downloaded files)
+.playwright-mcp/
+*.yml
+
+# QA / audit screenshots generated during testing — no ship value
+audit-*.png
+dashboard-*.png
+btn-*.png
+favicon-render.png

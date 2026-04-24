@@ -33,22 +33,6 @@ TRIGGER:PT0S
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:soumi-jos-rec-10dias@savethedate
-DTSTAMP:20260424T000000Z
-DTSTART:20270310T150000Z
-DTEND:20270310T153000Z
-SUMMARY:Faltan 10 dias para la Boda de Soumi & Jos
-DESCRIPTION:La boda es el 20 de marzo 2027 en Ciudad de Mexico.
-LOCATION:Ciudad de Mexico
-STATUS:CONFIRMED
-BEGIN:VALARM
-UID:alarm-10dias@soumyjos
-ACTION:DISPLAY
-DESCRIPTION:Faltan 10 dias para la Boda de Soumi & Jos
-TRIGGER:PT0S
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:soumi-jos-rec-5dias@savethedate
 DTSTAMP:20260424T000000Z
 DTSTART:20270315T150000Z
@@ -65,18 +49,18 @@ TRIGGER:PT0S
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:soumi-jos-rec-1dia@savethedate
+UID:soumi-jos-rec-hoy@savethedate
 DTSTAMP:20260424T000000Z
-DTSTART:20270319T150000Z
-DTEND:20270319T153000Z
-SUMMARY:Falta 1 dia para la Boda de Soumi & Jos
-DESCRIPTION:La boda es manana\, 20 de marzo 2027\, en Ciudad de Mexico.
+DTSTART:20270320T150000Z
+DTEND:20270320T153000Z
+SUMMARY:Hoy es la Boda de Soumi & Jos
+DESCRIPTION:La boda es hoy\, 20 de marzo 2027\, en Ciudad de Mexico.
 LOCATION:Ciudad de Mexico
 STATUS:CONFIRMED
 BEGIN:VALARM
-UID:alarm-1dia@soumyjos
+UID:alarm-hoy@soumyjos
 ACTION:DISPLAY
-DESCRIPTION:Falta 1 dia para la Boda de Soumi & Jos
+DESCRIPTION:Hoy es la Boda de Soumi & Jos
 TRIGGER:PT0S
 END:VALARM
 END:VEVENT

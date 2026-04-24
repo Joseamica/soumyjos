@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Soumi &amp; Jos">
+  <rect width="64" height="64" fill="#6b4432"/>
+  <text x="32" y="46"
+        font-family="'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif"
+        font-weight="400"
+        font-style="italic"
+        font-size="40"
+        text-anchor="middle"
+        letter-spacing="-0.5"
+        fill="#faf5ef">SJ</text>
+</svg>
