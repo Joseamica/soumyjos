@@ -8,6 +8,10 @@
 /preview.png
   Cache-Control: public, max-age=86400
 
+/og-preview.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=86400
+
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
