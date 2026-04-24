@@ -1,0 +1,7 @@
+# Redirects para Cloudflare Pages / Netlify
+# www.soumyjos.com → soumyjos.com
+https://www.soumyjos.com/* https://soumyjos.com/:splat 301!
+
+# Shortcut para copiar el link del calendario
+/calendar /Soumi-Jos-SaveTheDate.ics 302
+/calendario /Soumi-Jos-SaveTheDate.ics 302

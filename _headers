@@ -1,0 +1,15 @@
+# Headers para Cloudflare Pages / Netlify
+# El .ics debe servirse con MIME correcto para que iOS/Android lo abran con Calendar
+/Soumi-Jos-SaveTheDate.ics
+  Content-Type: text/calendar; charset=utf-8
+  Content-Disposition: attachment; filename="Soumi-Jos-SaveTheDate.ics"
+  Cache-Control: public, max-age=3600
+
+/preview.png
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: interest-cohort=()
