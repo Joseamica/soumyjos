@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Soumi &amp; Jos</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f5ede0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="gate" class="gate">
+  <div class="gate-inner">
+    <span class="gate-label">Dashboard · Soumi &amp; Jos</span>
+    <h1 class="gate-title">Entrar</h1>
+    <input type="password" id="gate-input" placeholder="Contraseña" autofocus autocomplete="off">
+    <button id="gate-btn">Continuar</button>
+    <p id="gate-error" class="gate-error">&nbsp;</p>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<main id="dashboard" class="dashboard hidden">
+
+  <!-- Nav -->
+  <nav class="dash-nav">
+    <a href="/" class="dash-nav-home">← volver a la invitación</a>
+    <span class="dash-nav-status">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">conectando…</span>
+    </span>
+  </nav>
+
+  <!-- Scene 1 — Apertura -->
+  <section class="scene scene-1" data-scene="1">
+    <span class="scene-label">Invitación · 20 de Marzo 2027</span>
+    <div class="metric-huge" id="total-visits">—</div>
+    <p class="scene-sub">personas han abierto la invitación</p>
+    <p class="scene-note" id="scene-1-note">Esperando datos…</p>
+  </section>
+
+  <!-- Scene 2 — Los que guardaron -->
+  <section class="scene scene-2" data-scene="2">
+    <span class="scene-label">Los que guardaron la fecha</span>
+    <div class="split">
+      <div class="split-item">
+        <div class="metric-big" id="ics-count">—</div>
+        <p class="split-label">en Calendario <span class="split-ext">(.ics)</span></p>
+      </div>
+      <div class="split-divider" aria-hidden="true"></div>
+      <div class="split-item">
+        <div class="metric-big" id="google-count">—</div>
+        <p class="split-label">en Google Calendar</p>
+      </div>
+    </div>
+    <p class="scene-note" id="scene-2-note">—</p>
+  </section>
+
+  <!-- Scene 3 — Línea de tiempo -->
+  <section class="scene scene-3" data-scene="3">
+    <span class="scene-label">Línea de tiempo</span>
+    <h2 class="scene-heading">Cuándo han llegado</h2>
+    <div class="timeline-chart" id="timeline-chart">
+      <p class="empty-note">Sin visitas todavía</p>
+    </div>
+    <p class="scene-note" id="scene-3-note">—</p>
+  </section>
+
+  <!-- Scene 4 — Dispositivos -->
+  <section class="scene scene-4" data-scene="4">
+    <span class="scene-label">Cómo entraron</span>
+    <h2 class="scene-heading">Dispositivos</h2>
+    <div class="bars" id="device-bars">
+      <p class="empty-note">Sin datos de dispositivo</p>
+    </div>
+    <p class="scene-note">
+      <span id="wa-count">0</span> abrieron desde WhatsApp / in-app browser
+    </p>
+  </section>
+
+  <!-- Scene 5 — Cierre -->
+  <section class="scene scene-5" data-scene="5">
+    <span class="scene-label">En este momento</span>
+    <h2 class="scene-heading" id="last-activity">—</h2>
+    <p class="scene-sub">última actividad registrada</p>
+    <div class="meta-list" id="meta-list"></div>
+  </section>
+
+</main>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="../config.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

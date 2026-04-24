@@ -1,0 +1,452 @@
+/* ============================================
+   SoumyJos · Dashboard
+   Paleta: cream cálido con acentos burgundy.
+   Tipografía: Cormorant italic para números grandes,
+   Jost en pesos delgados para labels/body.
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5ede0;
+  --card: #faf5ef;
+  --ink: #3b1f10;
+  --walnut: #6b4432;
+  --sepia: #9a6855;
+  --sand: #b59a85;
+  --burgundy: #8b2e2e;
+  --rust: #a04535;
+  --sage: #5a7d4a;
+  --rule: rgba(139, 46, 46, 0.18);
+  --rule-faint: rgba(139, 46, 46, 0.08);
+  --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* --- Password gate --- */
+.gate {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+.gate.hidden { display: none; }
+
+.gate-inner {
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+}
+
+.gate-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  display: block;
+  margin-bottom: 22px;
+}
+
+.gate-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 44px;
+  color: var(--ink);
+  margin-bottom: 32px;
+  letter-spacing: .02em;
+}
+
+.gate-inner input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color .3s var(--ease-quiet);
+}
+.gate-inner input:focus,
+.gate-inner input:focus-visible {
+  border-color: var(--burgundy);
+}
+
+.gate-inner button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  background: transparent;
+  color: var(--burgundy);
+  border: 1px solid var(--burgundy);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color .35s var(--ease-quiet),
+    color .35s var(--ease-quiet),
+    transform .18s var(--ease-quiet);
+  -webkit-tap-highlight-color: transparent;
+}
+.gate-inner button:hover,
+.gate-inner button:focus-visible {
+  background: var(--burgundy);
+  color: var(--card);
+  outline: none;
+}
+.gate-inner button:active { transform: scale(.98); }
+
+.gate-error {
+  margin-top: 14px;
+  color: var(--burgundy);
+  font-family: 'Jost', sans-serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: .02em;
+  min-height: 1.4em;
+}
+
+/* --- Dashboard layout --- */
+.dashboard {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.dashboard.hidden { display: none; }
+
+/* --- Nav --- */
+.dash-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 0 0;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+.dash-nav a {
+  color: var(--sepia);
+  text-decoration: none;
+  transition: color .3s var(--ease-quiet);
+  padding: 4px 0;
+}
+.dash-nav a:hover,
+.dash-nav a:focus-visible {
+  color: var(--burgundy);
+  outline: none;
+}
+
+.dash-nav-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sand);
+}
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sand);
+  transition: background-color .4s var(--ease-quiet), box-shadow .4s var(--ease-quiet);
+}
+.status-dot--live {
+  background: var(--sage);
+  box-shadow: 0 0 0 3px rgba(90, 125, 74, .18);
+}
+.status-dot--off { background: #bfb4a7; }
+
+/* --- Scenes (scrollytelling ligero) --- */
+.scene {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 64px 0;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 1s var(--ease-quiet),
+    transform 1s var(--ease-quiet);
+}
+.scene.scene--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scene-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: .45em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  margin-bottom: 32px;
+}
+
+.scene-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(36px, 6vw, 56px);
+  color: var(--ink);
+  margin-bottom: 28px;
+  line-height: 1.05;
+  letter-spacing: .01em;
+}
+
+.scene-sub {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--walnut);
+  margin-top: 8px;
+  max-width: 40ch;
+}
+
+.scene-note {
+  margin-top: 28px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: .02em;
+  color: var(--sand);
+}
+
+/* --- Big metrics --- */
+.metric-huge {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(96px, 19vw, 192px);
+  color: var(--burgundy);
+  line-height: .9;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.metric-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(56px, 10vw, 96px);
+  color: var(--burgundy);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+/* --- Scene 2 split --- */
+.split {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 36px;
+  align-items: center;
+  margin-top: 8px;
+}
+.split-item {
+  display: flex;
+  flex-direction: column;
+}
+.split-divider {
+  width: 1px;
+  height: 88px;
+  background: var(--rule);
+}
+.split-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--walnut);
+}
+.split-ext {
+  color: var(--sand);
+  font-size: 9px;
+  margin-left: 2px;
+}
+
+@media (max-width: 520px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .split-divider {
+    width: 48px;
+    height: 1px;
+    justify-self: start;
+  }
+}
+
+/* --- Scene 3 timeline chart --- */
+.timeline-chart {
+  width: 100%;
+  height: 220px;
+  margin-top: 12px;
+}
+.bars-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end; /* hoy va a la derecha; datos sparse fluyen desde ahí */
+  gap: 2px;
+  height: 100%;
+  width: 100%;
+}
+.bar-col {
+  flex: 1 1 0;
+  min-width: 3px;
+  max-width: 28px; /* evita que un solo día se convierta en un slab gigante */
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  cursor: default;
+}
+.bar-col .bar {
+  width: 100%;
+  background: var(--burgundy);
+  opacity: .72;
+  min-height: 1px;
+  transition: opacity .3s var(--ease-quiet);
+}
+.bar-col:hover .bar { opacity: 1; }
+
+/* --- Scene 4 device bars --- */
+.bars {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 110px;
+  gap: 16px;
+  align-items: center;
+}
+.bar-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--walnut);
+}
+.bar-track {
+  height: 10px;
+  background: var(--rule-faint);
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--burgundy);
+  opacity: .82;
+  transition: width .9s var(--ease-quiet);
+}
+.bar-count {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--ink);
+  text-align: right;
+  letter-spacing: .02em;
+}
+.bar-pct {
+  color: var(--sand);
+  font-size: 10px;
+  margin-left: 4px;
+  letter-spacing: .04em;
+}
+
+@media (max-width: 520px) {
+  .bar-row {
+    grid-template-columns: 68px 1fr 84px;
+    gap: 10px;
+  }
+}
+
+/* --- Scene 5 meta list --- */
+.meta-list {
+  width: 100%;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+}
+.meta-k {
+  color: var(--sepia);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+.meta-v {
+  color: var(--ink);
+}
+
+/* --- Empty state --- */
+.empty-note {
+  font-family: 'Jost', sans-serif;
+  font-style: italic;
+  color: var(--sand);
+  font-size: 13px;
+  padding: 20px 0;
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .scene {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .bar-fill { transition: none; }
+}
+
+/* --- Responsive tweaks --- */
+@media (max-width: 520px) {
+  .dashboard { padding: 0 20px; }
+  .scene { padding: 48px 0; }
+  .scene-heading { margin-bottom: 22px; }
+}

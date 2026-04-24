@@ -1,0 +1,34 @@
+- main [ref=e2]:
+  - navigation [ref=e3]:
+    - link "← volver a la invitación" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e7]: en vivo
+  - generic [ref=e8]:
+    - generic [ref=e9]: Invitación · 20 de Marzo 2027
+    - generic [ref=e10]: —
+    - paragraph [ref=e11]: personas han abierto la invitación
+    - paragraph [ref=e12]: Esperando datos…
+  - generic [ref=e13]:
+    - generic [ref=e14]: Los que guardaron la fecha
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]: —
+        - paragraph [ref=e18]: en Calendario (.ics)
+      - generic [ref=e20]:
+        - generic [ref=e21]: —
+        - paragraph [ref=e22]: en Google Calendar
+    - paragraph [ref=e23]: —
+  - generic [ref=e24]:
+    - generic [ref=e25]: Línea de tiempo
+    - heading "Cuándo han llegado" [level=2] [ref=e26]
+    - paragraph [ref=e28]: Sin visitas todavía
+    - paragraph [ref=e29]: —
+  - generic [ref=e30]:
+    - generic [ref=e31]: Cómo entraron
+    - heading "Dispositivos" [level=2] [ref=e32]
+    - paragraph [ref=e34]: Sin datos de dispositivo
+    - paragraph [ref=e35]: 0 abrieron desde WhatsApp / in-app browser
+  - generic [ref=e36]:
+    - generic [ref=e37]: En este momento
+    - heading "—" [level=2] [ref=e38]
+    - paragraph [ref=e39]: última actividad registrada

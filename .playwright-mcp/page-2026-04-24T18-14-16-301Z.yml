@@ -1,0 +1,56 @@
+- main [ref=e2]:
+  - navigation [ref=e3]:
+    - link "← volver a la invitación" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e7]: en vivo
+  - generic [ref=e8]:
+    - generic [ref=e9]: Invitación · 20 de Marzo 2027
+    - generic [ref=e10]: "2"
+    - paragraph [ref=e11]: personas han abierto la invitación
+    - paragraph [ref=e12]: Desde 24 de abril
+  - generic [ref=e13]:
+    - generic [ref=e14]: Los que guardaron la fecha
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]: "1"
+        - paragraph [ref=e18]: en Calendario (.ics)
+      - generic [ref=e20]:
+        - generic [ref=e21]: "0"
+        - paragraph [ref=e22]: en Google Calendar
+    - paragraph [ref=e23]: 1 de 2 (50%) guardaron la fecha
+  - generic [ref=e24]:
+    - generic [ref=e25]: Línea de tiempo
+    - heading "Cuándo han llegado" [level=2] [ref=e26]
+    - generic "24 de abril · 2 visitas" [ref=e42]
+    - paragraph [ref=e29]: Del 24 de abril a hoy · 1 día
+  - generic [ref=e30]:
+    - generic [ref=e31]: Cómo entraron
+    - heading "Dispositivos" [level=2] [ref=e32]
+    - generic [ref=e33]:
+      - generic [ref=e44]:
+        - generic [ref=e45]: iOS
+        - generic [ref=e47]: 0 (0%)
+      - generic [ref=e48]:
+        - generic [ref=e49]: Android
+        - generic [ref=e51]: 0 (0%)
+      - generic [ref=e52]:
+        - generic [ref=e53]: Otro
+        - generic [ref=e56]: 2 (100%)
+    - paragraph [ref=e35]: 0 abrieron desde WhatsApp / in-app browser
+  - generic [ref=e36]:
+    - generic [ref=e37]: En este momento
+    - heading "hace segundos" [level=2] [ref=e57]
+    - paragraph [ref=e39]: última actividad registrada
+    - generic [ref=e40]:
+      - generic [ref=e58]:
+        - generic [ref=e59]: Primera visita
+        - generic [ref=e60]: 24 de abril
+      - generic [ref=e61]:
+        - generic [ref=e62]: Última actividad
+        - generic [ref=e63]: hace segundos
+      - generic [ref=e64]:
+        - generic [ref=e65]: Tasa de conversión
+        - generic [ref=e66]: 50%
+      - generic [ref=e67]:
+        - generic [ref=e68]: Actualizado
+        - generic [ref=e69]: 12:14 p.m.

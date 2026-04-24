@@ -30,6 +30,10 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+  }
+
   body {
     background: #ede4d8;
     font-family: 'Jost', sans-serif;
@@ -45,7 +49,7 @@
     width: 100%;
     background: #faf5ef;
     box-shadow: 0 12px 60px rgba(0,0,0,.18), 0 3px 10px rgba(0,0,0,.08);
-    animation: rise 1.1s cubic-bezier(.22,.8,.36,1) both;
+    animation: rise 1.1s var(--ease-quiet) both;
   }
 
   @keyframes rise {
@@ -53,11 +57,38 @@
     to   { opacity:1; transform:translateY(0); }
   }
 
+  /* Interior cascade — contents settle into the card once it has risen */
+  @keyframes quietFade { to { opacity: 1; } }
+
+  .card > .photos-top,
+  .card > .hero,
+  .card > .content,
+  .card > .photos-bottom {
+    opacity: 0;
+    animation: quietFade .9s var(--ease-quiet) both;
+  }
+  .card > .photos-top    { animation-delay: .35s; }
+  .card > .hero          { animation-delay: .55s; }
+  .card > .content       { animation-delay: .75s; }
+  .card > .photos-bottom { animation-delay: 1.00s; }
+
   /* ── Fotos arriba: B&W ── */
   .photos-top {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3px;
+  }
+
+  .photo-window,
+  .hero {
+    --parallax-y: 0px;
+    --parallax-pad: 180px;
+    overflow: hidden;
+    contain: paint;
+  }
+
+  .photo-window {
+    height: 260px;
   }
 
   .photos-top img {
@@ -82,11 +113,16 @@
 
   .hero img {
     width: 100%;
-    height: 100%;
+    height: calc(100% + var(--parallax-pad));
     object-fit: cover;
     object-position: center 50%;
     display: block;
     filter: none;
+    transform-origin: center center;
+    margin-top: calc(var(--parallax-pad) * -.5);
+    transform: translate3d(0, var(--parallax-y), 0);
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   /* Overlay suave solo arriba para que se lean las letras en el cielo */
@@ -212,7 +248,7 @@
     color: #6b4432;
     text-align: center;
     line-height: 1.65;
-    animation: fadeDown .5s ease both;
+    animation: fadeDown .5s var(--ease-quiet) both;
   }
   .wa-banner.show { display: block; }
   @keyframes fadeDown {
@@ -254,7 +290,10 @@
     letter-spacing: .42em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all .35s ease;
+    transition:
+      background-color .35s var(--ease-quiet),
+      color .35s var(--ease-quiet),
+      transform .18s var(--ease-quiet);
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -279,7 +318,7 @@
     text-underline-offset: 4px;
     text-decoration-thickness: .5px;
     cursor: pointer;
-    transition: color .3s ease;
+    transition: color .3s var(--ease-quiet);
     padding: 4px 8px;
     -webkit-tap-highlight-color: transparent;
   }
@@ -305,7 +344,7 @@
     text-transform: uppercase;
     color: #5a7d4a;
   }
-  .cal-feedback.show { display: block; animation: fadeDown .4s ease both; }
+  .cal-feedback.show { display: block; animation: fadeDown .4s var(--ease-quiet) both; }
 
   /* ── Fotos abajo: B&W ── */
   .photos-bottom {
@@ -326,11 +365,49 @@
   .photos-bottom img.bote   { object-position: center 35%; }
   .photos-bottom img.abrazo { object-position: center 18%; }
 
+  .photo-window img {
+    width: 100%;
+    height: calc(100% + var(--parallax-pad));
+    margin-top: calc(var(--parallax-pad) * -.5);
+    transform: translate3d(0, var(--parallax-y), 0);
+    transform-origin: center center;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Honor the user's motion preference — disable autoplay animations,
+     keep input-triggered transitions (hover/focus/press) as response */
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .card > .photos-top,
+    .card > .hero,
+    .card > .content,
+    .card > .photos-bottom {
+      animation: none;
+      opacity: 1;
+    }
+    .hero img { animation: none; }
+    .hero img,
+    .photo-window img {
+      height: 100%;
+      margin-top: 0;
+      transform: none;
+      will-change: auto;
+    }
+    .wa-banner { animation: none; }
+    .cal-feedback.show { animation: none; }
+  }
+
   @media (max-width:520px) {
     .hero { height: 300px; }
     .names-hero { font-size: 36px; }
     .content { padding: 32px 32px 38px; }
     .date-num { font-size: 34px; }
+    .photo-window { height: 180px; }
     .photos-top img, .photos-bottom img { height: 180px; }
   }
 </style>
@@ -407,9 +484,15 @@
 
   </div>
 
+<!-- Firebase tracking (vivo hacia /dashboard; si no hay config, falla en silencio) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="/config.js"></script>
+
 <script>
 (function () {
   var btn = document.getElementById('saveCalendarBtn');
+  var gbtn = document.getElementById('googleCalBtn');
   var feedback = document.getElementById('calFeedback');
   var banner = document.getElementById('waBanner');
 
@@ -429,13 +512,149 @@
     if (isAndroid && iosStep) iosStep.style.display = 'none';
   }
 
+  // Scroll depth: visible photo parallax with a restrained editorial feel.
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var depthFrames = [];
+  var depthTicking = false;
+
+  function wrapDepthPhoto(img, travel) {
+    if (!img || img.parentNode.classList.contains('photo-window')) return img.parentNode;
+
+    var frame = document.createElement('div');
+    frame.className = 'photo-window';
+    frame.setAttribute('data-depth-travel', travel);
+    img.parentNode.insertBefore(frame, img);
+    frame.appendChild(img);
+    return frame;
+  }
+
+  function setupScrollDepth() {
+    var hero = document.querySelector('.hero');
+    if (hero) {
+      hero.setAttribute('data-depth-travel', '92');
+      hero.style.setProperty('--parallax-pad', '220px');
+      depthFrames.push(hero);
+    }
+
+    var photoImgs = document.querySelectorAll('.photos-top > img, .photos-bottom > img');
+    Array.prototype.forEach.call(photoImgs, function (img, index) {
+      var frame = wrapDepthPhoto(img, index % 2 ? '64' : '76');
+      if (frame) {
+        frame.style.setProperty('--parallax-pad', '190px');
+        depthFrames.push(frame);
+      }
+    });
+  }
+
+  function resetScrollDepth() {
+    depthFrames.forEach(function (frame) {
+      frame.style.setProperty('--parallax-y', '0px');
+    });
+    depthTicking = false;
+  }
+
+  function updateScrollDepth() {
+    depthTicking = false;
+    if (motionQuery.matches || !depthFrames.length) {
+      resetScrollDepth();
+      return;
+    }
+
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+    depthFrames.forEach(function (frame) {
+      var rect = frame.getBoundingClientRect();
+      if (rect.bottom < -80 || rect.top > viewportHeight + 80) return;
+
+      var travel = parseFloat(frame.getAttribute('data-depth-travel')) || 18;
+      var viewportMid = viewportHeight / 2;
+      var frameMid = rect.top + rect.height / 2;
+      var range = viewportMid + rect.height / 2;
+      var progress = Math.max(-1, Math.min(1, (frameMid - viewportMid) / range));
+      frame.style.setProperty('--parallax-y', (progress * travel).toFixed(2) + 'px');
+    });
+  }
+
+  function requestDepthUpdate() {
+    if (depthTicking || motionQuery.matches) return;
+    depthTicking = true;
+    window.requestAnimationFrame(updateScrollDepth);
+  }
+
+  setupScrollDepth();
+  updateScrollDepth();
+  window.addEventListener('scroll', requestDepthUpdate, { passive: true });
+  window.addEventListener('resize', requestDepthUpdate);
+  if (motionQuery.addEventListener) {
+    motionQuery.addEventListener('change', function () {
+      if (motionQuery.matches) resetScrollDepth();
+      else requestDepthUpdate();
+    });
+  }
+
+  // --- Tracking (opcional; config.js con credenciales de Firebase lo activa) ---
+  var tracker = null;
+  try {
+    if (typeof FIREBASE_CONFIG !== 'undefined' &&
+        FIREBASE_CONFIG.apiKey &&
+        FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY' &&
+        typeof firebase !== 'undefined') {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      var db = firebase.database();
+      var sid = null;
+      try { sid = localStorage.getItem('_soumyjos_sid'); } catch (e) {}
+      if (!sid) {
+        sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        try { localStorage.setItem('_soumyjos_sid', sid); } catch (e) {}
+      }
+      tracker = { db: db, sid: sid };
+
+      var visitsRef = db.ref('tracking/visits/' + sid);
+      visitsRef.update({
+        lastActivity: Date.now(),
+        userAgent: ua,
+        device: isIOS ? 'iOS' : isAndroid ? 'Android' : 'Other',
+        isInAppBrowser: !!isInAppBrowser,
+        language: navigator.language || '',
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        visits: firebase.database.ServerValue.increment(1)
+      });
+      visitsRef.child('startedAt').transaction(function (v) { return v || Date.now(); });
+
+      // Heartbeat cada 20s mientras la página esté abierta
+      setInterval(function () {
+        try { visitsRef.child('lastActivity').set(Date.now()); } catch (e) {}
+      }, 20000);
+    }
+  } catch (e) { /* tracking opcional */ }
+
+  function trackClick(which) {
+    if (!tracker) return;
+    try {
+      var ref = tracker.db.ref('tracking/visits/' + tracker.sid);
+      var patch = { lastActivity: Date.now() };
+      if (which === 'ics') {
+        patch.calIcsClicked = true;
+        patch.calIcsClickedAt = Date.now();
+      } else if (which === 'google') {
+        patch.calGoogleClicked = true;
+        patch.calGoogleClickedAt = Date.now();
+      }
+      ref.update(patch);
+    } catch (e) {}
+  }
+
   if (btn) {
     btn.addEventListener('click', function () {
+      trackClick('ics');
       if (feedback) {
         feedback.classList.add('show');
         setTimeout(function(){ feedback.classList.remove('show'); }, 7000);
       }
     });
+  }
+  if (gbtn) {
+    gbtn.addEventListener('click', function () { trackClick('google'); });
   }
 })();
 </script>

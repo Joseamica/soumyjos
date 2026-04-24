@@ -1,0 +1,83 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Soumi&Jos//SaveTheDate//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Boda Soumi & Jos
+X-WR-TIMEZONE:America/Mexico_City
+BEGIN:VEVENT
+UID:soumi-jos-boda-20270320@savethedate
+DTSTAMP:20260424T000000Z
+DTSTART;VALUE=DATE:20270320
+DTEND;VALUE=DATE:20270321
+SUMMARY:Boda de Soumi & Jos
+DESCRIPTION:Save the Date - Boda de Soumi y Jos en Ciudad de Mexico. La invitacion formal llegara pronto.
+LOCATION:Ciudad de Mexico\, Mexico
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:soumi-jos-rec-1mes@savethedate
+DTSTAMP:20260424T000000Z
+DTSTART:20270220T150000Z
+DTEND:20270220T153000Z
+SUMMARY:Falta 1 mes para la Boda de Soumi & Jos
+DESCRIPTION:La boda es el 20 de marzo 2027 en Ciudad de Mexico.
+LOCATION:Ciudad de Mexico
+STATUS:CONFIRMED
+BEGIN:VALARM
+UID:alarm-1mes@soumyjos
+ACTION:DISPLAY
+DESCRIPTION:Falta 1 mes para la Boda de Soumi & Jos
+TRIGGER:PT0S
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:soumi-jos-rec-10dias@savethedate
+DTSTAMP:20260424T000000Z
+DTSTART:20270310T150000Z
+DTEND:20270310T153000Z
+SUMMARY:Faltan 10 dias para la Boda de Soumi & Jos
+DESCRIPTION:La boda es el 20 de marzo 2027 en Ciudad de Mexico.
+LOCATION:Ciudad de Mexico
+STATUS:CONFIRMED
+BEGIN:VALARM
+UID:alarm-10dias@soumyjos
+ACTION:DISPLAY
+DESCRIPTION:Faltan 10 dias para la Boda de Soumi & Jos
+TRIGGER:PT0S
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:soumi-jos-rec-5dias@savethedate
+DTSTAMP:20260424T000000Z
+DTSTART:20270315T150000Z
+DTEND:20270315T153000Z
+SUMMARY:Faltan 5 dias para la Boda de Soumi & Jos
+DESCRIPTION:La boda es el 20 de marzo 2027 en Ciudad de Mexico.
+LOCATION:Ciudad de Mexico
+STATUS:CONFIRMED
+BEGIN:VALARM
+UID:alarm-5dias@soumyjos
+ACTION:DISPLAY
+DESCRIPTION:Faltan 5 dias para la Boda de Soumi & Jos
+TRIGGER:PT0S
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:soumi-jos-rec-1dia@savethedate
+DTSTAMP:20260424T000000Z
+DTSTART:20270319T150000Z
+DTEND:20270319T153000Z
+SUMMARY:Falta 1 dia para la Boda de Soumi & Jos
+DESCRIPTION:La boda es manana\, 20 de marzo 2027\, en Ciudad de Mexico.
+LOCATION:Ciudad de Mexico
+STATUS:CONFIRMED
+BEGIN:VALARM
+UID:alarm-1dia@soumyjos
+ACTION:DISPLAY
+DESCRIPTION:Falta 1 dia para la Boda de Soumi & Jos
+TRIGGER:PT0S
+END:VALARM
+END:VEVENT
+END:VCALENDAR
