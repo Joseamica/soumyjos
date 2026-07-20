@@ -5,3 +5,7 @@ https://www.soumyjos.com/* https://soumyjos.com/:splat 301!
 # Shortcut para copiar el link del calendario
 /calendar /Soumi-Jos-SaveTheDate.ics 302
 /calendario /Soumi-Jos-SaveTheDate.ics 302
+
+# Nota: la invitación formal vive en invitacion.html y Cloudflare Pages sirve
+# la URL limpia /invitacion automáticamente (clean URLs); NO poner una regla
+# /invitacion → /invitacion.html porque crea un loop de redirección con Pages.

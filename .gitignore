@@ -16,3 +16,6 @@ audit-*.png
 dashboard-*.png
 btn-*.png
 favicon-render.png
+
+# Visual brainstorming companion (mockups)
+.superpowers/

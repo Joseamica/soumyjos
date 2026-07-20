@@ -3,6 +3,27 @@
     "tracking": {
       ".read": true,
       ".write": true
+    },
+    "rsvp": {
+      ".read": "auth != null",
+      ".write": false,
+      "$id": {
+        ".write": "!data.exists() || (newData.child('sid').val() === data.child('sid').val())",
+        ".validate": "newData.hasChildren(['nombre','asiste','sid'])",
+        "nombre":        { ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 80" },
+        "asiste":        { ".validate": "newData.isBoolean()" },
+        "pases":         { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 12" },
+        "acompanantes":  { ".validate": "true", "$i": { ".validate": "newData.isString() && newData.val().length <= 80" } },
+        "restricciones": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 280)" },
+        "mensaje":       { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 500)" },
+        "grupo":         { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 16)" },
+        "sid":           { ".validate": "newData.isString() && newData.val().length <= 64" },
+        "createdAt":     { ".validate": "newData.isNumber()" },
+        "updatedAt":     { ".validate": "!newData.exists() || newData.isNumber()" },
+        "userAgent":     { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 512)" },
+        "device":        { ".validate": "newData.isString() && newData.val().length <= 16" },
+        "$other":        { ".validate": false }
+      }
     }
   }
 }

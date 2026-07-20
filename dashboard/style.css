@@ -450,3 +450,13 @@ body {
   .scene { padding: 48px 0; }
   .scene-heading { margin-bottom: 22px; }
 }
+
+/* --- RSVP (scene 6) export button --- */
+.rsvp-csv-btn {
+  margin-top: 20px; padding: 12px 20px; background: transparent;
+  color: var(--burgundy); border: 1px solid var(--burgundy);
+  font-family: 'Jost', sans-serif; font-weight: 300; font-size: 10px;
+  letter-spacing: .42em; text-transform: uppercase; cursor: pointer;
+  transition: background-color .35s var(--ease-quiet), color .35s var(--ease-quiet);
+}
+.rsvp-csv-btn:hover, .rsvp-csv-btn:focus-visible { background: var(--burgundy); color: var(--card); outline: none; }

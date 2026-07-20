@@ -31,7 +31,7 @@
     }
 
     function submit() {
-      if (input.value === DASHBOARD_PASSWORD) {
+      if (input.value.trim().toLowerCase() === DASHBOARD_PASSWORD) {
         try { sessionStorage.setItem('_soumyjos_dash_auth', 'ok'); } catch (e) {}
         openDash();
       } else {
@@ -99,9 +99,103 @@
         var metrics = computeMetrics(data);
         render(metrics);
       });
+
+      // --- RSVP (requiere auth por la regla .read: "auth != null") ---
+      firebase.auth().signInAnonymously().then(function () {
+        db.ref('rsvp').on('value', function (snap) {
+          renderRsvp(computeRsvp(snap.val() || {}));
+        });
+      }).catch(function (e) {
+        setText('scene-6-note', 'RSVP no disponible: ' + e.message);
+      });
+
+      var csvBtn = document.getElementById('rsvp-csv-btn');
+      if (csvBtn) csvBtn.addEventListener('click', function () { exportRsvpCsv(_lastRsvp); });
     } catch (e) {
       setStatus('error: ' + e.message, 'off');
     }
+  }
+
+  // --- RSVP (nodo hermano de tracking) ---
+  var _lastRsvp = [];
+
+  function computeRsvp(rsvpData) {
+    var bySid = {};
+    Object.keys(rsvpData || {}).forEach(function (pushId) {
+      var r = rsvpData[pushId];
+      if (!r || typeof r !== 'object') return;
+      var sid = r.sid || pushId;
+      var ts = r.updatedAt || r.createdAt || 0;
+      if (!bySid[sid] || ts >= bySid[sid]._ts) { r._ts = ts; bySid[sid] = r; } // última gana
+    });
+    var confirmados = 0, totalPases = 0, declinan = 0;
+    var asistentes = [], restricciones = [], todas = [];
+    Object.keys(bySid).forEach(function (sid) {
+      var r = bySid[sid];
+      todas.push(r);
+      if (r.asiste) {
+        confirmados++;
+        totalPases += (typeof r.pases === 'number' ? r.pases : 1);
+        asistentes.push(r);
+        if (r.restricciones) restricciones.push({ nombre: r.nombre, texto: r.restricciones });
+      } else { declinan++; }
+    });
+    return { confirmados: confirmados, totalPases: totalPases, declinan: declinan,
+             asistentes: asistentes, restricciones: restricciones, todas: todas };
+  }
+
+  function rsvpMetaItem(container, k, v) {
+    var row = document.createElement('div'); row.className = 'meta-item';
+    var ks = document.createElement('span'); ks.className = 'meta-k'; ks.textContent = k;
+    var vs = document.createElement('span'); vs.className = 'meta-v'; vs.textContent = v;
+    row.appendChild(ks); row.appendChild(vs); container.appendChild(row);
+  }
+
+  function renderRsvp(m) {
+    setText('rsvp-confirmados', m.confirmados);
+    setText('rsvp-pases', m.totalPases);
+    setText('rsvp-declinan', m.declinan);
+    var list = document.getElementById('rsvp-list');
+    if (list) {
+      list.textContent = '';
+      m.asistentes.forEach(function (r) {
+        var pases = (typeof r.pases === 'number' ? r.pases : 1);
+        rsvpMetaItem(list, r.nombre || '(sin nombre)', pases + (pases === 1 ? ' pase' : ' pases'));
+      });
+    }
+    var restr = document.getElementById('rsvp-restricciones');
+    if (restr) {
+      restr.textContent = '';
+      m.restricciones.forEach(function (it) { rsvpMetaItem(restr, it.nombre, it.texto); });
+    }
+    setText('scene-6-note',
+      (m.confirmados + m.declinan) + ' respuestas · ' + m.totalPases + ' asistentes esperados');
+    _lastRsvp = m.todas;
+  }
+
+  function exportRsvpCsv(list) {
+    var rows = [['nombre', 'asiste', 'pases', 'acompanantes', 'restricciones', 'mensaje', 'device']];
+    (list || []).forEach(function (r) {
+      rows.push([
+        r.nombre || '', r.asiste ? 'si' : 'no',
+        (typeof r.pases === 'number' ? r.pases : ''),
+        (r.acompanantes || []).join(' | '),
+        r.restricciones || '', r.mensaje || '', r.device || ''
+      ]);
+    });
+    var csv = rows.map(function (row) {
+      return row.map(function (cell) {
+        var s = String(cell);
+        if (/[",\n]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }).join(',');
+    }).join('\r\n');
+    var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'rsvp-soumyjos.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
 
   // --- Metrics ---

@@ -22,7 +22,7 @@
   <div class="gate-inner">
     <span class="gate-label">Dashboard · Soumi &amp; Jos</span>
     <h1 class="gate-title">Entrar</h1>
-    <input type="password" id="gate-input" placeholder="Contraseña" autofocus autocomplete="off">
+    <input type="password" id="gate-input" placeholder="Contraseña" autofocus autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="text">
     <button id="gate-btn">Continuar</button>
     <p id="gate-error" class="gate-error">&nbsp;</p>
   </div>
@@ -95,11 +95,37 @@
     <div class="meta-list" id="meta-list"></div>
   </section>
 
+  <!-- Scene 6 — Confirmaciones (RSVP) -->
+  <section class="scene scene-6" data-scene="6">
+    <span class="scene-label">Confirmaciones · RSVP</span>
+    <div class="split">
+      <div class="split-item">
+        <div class="metric-big" id="rsvp-confirmados">—</div>
+        <p class="split-label">confirman</p>
+      </div>
+      <div class="split-divider" aria-hidden="true"></div>
+      <div class="split-item">
+        <div class="metric-big" id="rsvp-pases">—</div>
+        <p class="split-label">pases <span class="split-ext">(banquete)</span></p>
+      </div>
+      <div class="split-divider" aria-hidden="true"></div>
+      <div class="split-item">
+        <div class="metric-big" id="rsvp-declinan">—</div>
+        <p class="split-label">declinan</p>
+      </div>
+    </div>
+    <div class="meta-list" id="rsvp-list"></div>
+    <div class="meta-list" id="rsvp-restricciones"></div>
+    <button id="rsvp-csv-btn" class="rsvp-csv-btn" type="button">Exportar CSV</button>
+    <p class="scene-note" id="scene-6-note">—</p>
+  </section>
+
 </main>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="../config.js"></script>
 <script src="app.js"></script>
 
